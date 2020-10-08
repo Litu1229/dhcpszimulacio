@@ -12,7 +12,34 @@ namespace dhcpszimulacio
         static List<string> exclueded = new List<string>();
         static Dictionary<string, string> dhcp = new Dictionary<string, string>();
         static Dictionary<string, string> reserved = new Dictionary<string, string>();
+        static List<string> commands = new List<string>();
 
+        static void BeolvasList(List<string>l,string filename)
+        {
+            try
+            {
+                StreamReader fajl = new StreamReader(filename);
+                try
+                {
+                    while (!fajl.EndOfStream)
+                    {
+                        l.Add(fajl.ReadLine());
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+                finally 
+                {
+                    fajl.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+        }
         static void BeolvasExcluded()
         {
             try
@@ -76,13 +103,15 @@ namespace dhcpszimulacio
             static void Main(string[] args)
             {
                 BeolvasExcluded();
+            BeolvasList(exclueded,"excluded.csv");
+            BeolvasList(commands,"test.csv");
             beolvasDictionary(dhcp, "dhcp.csv");
             beolvasDictionary(reserved, "reserved.csv");
-            foreach (var e in reserved)
+            foreach (var e in commands)
             {
                 Console.WriteLine(e);
             }
-                Console.WriteLine("\nVége..");
+                Console.WriteLine("\n---------------------------------------------------");
                 Console.ReadLine();
             }
         }
